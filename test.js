@@ -12,7 +12,7 @@ describe('Test the looper Promise function', function () {
             value => value + 1,
             worked => worked < 10,
             0
-        ).then(finalValue => assert(finalValue === 10));
+        ).then(finalValue => assert.strictEqual(finalValue, 10));
     });
 
     it('A while loop that should add up to 10, using Promises', function () {
@@ -20,7 +20,7 @@ describe('Test the looper Promise function', function () {
             value => Promise.resolve(value + 1),
             worked => worked < 10,
             0
-        ).then(finalValue => assert(finalValue === 10));
+        ).then(finalValue => assert.strictEqual(finalValue, 10));
     });
 
     it('Make a do ... until loop', function () {
@@ -28,7 +28,7 @@ describe('Test the looper Promise function', function () {
         return Promise.looper(
             value => (value === undefined ? 0 : value + 1),
             worked => worked < maxValue
-        ).then(finalValue => assert(finalValue === 10));
+        ).then(finalValue => assert.strictEqual(finalValue, 10));
     });
 
     it('Should follow a Promise chain', function () {
@@ -41,5 +41,18 @@ describe('Test the looper Promise function', function () {
             worked => worked < 10,
             0
         ).then(finalValue => assert.strictEqual(finalValue, 10));
+    });
+});
+
+describe('Test the waiter Promise function', function () {
+
+    it('Should wait 3 seconds', function () {
+        this.timeout(5000);
+        const then = Date.now();
+        return Promise.waiter(3*1000)
+        .then(() => {
+            const now = Date.now();
+            assert(now - then >= 3000, 'Promise did not wait long enough');
+        });
     });
 });

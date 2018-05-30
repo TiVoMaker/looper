@@ -1,12 +1,12 @@
-# Promise.looper(worker, checker, [initial value])
+# Promise Conveniences
 
-I've found myself making looping constructs within an explicitly created Promise over and over, and I was getting tired of it. I made this to reduce the drudgery of it.
+I've found myself making  a few Promise helpers over and over, and I was getting tired of it. I made this to reduce the drudgery of it.
 
 Just require it:
 
-	require('looper');
+	require('promise-conveniences');
 
-And use it:
+A looping construct:
 
 	console.log(Promise.looper(
 		function (value) {
@@ -19,3 +19,12 @@ And use it:
 	));   // 10
 	
 If you provide an initial value, it's a **while** loop, or without one it's a **do...until** loop.
+
+To wait a specific amount of time:
+
+	const then = Date.now();
+	Promise.waiter(2500)
+	.then(() => {
+		const now = Date.now();
+		console.log(`Waited ${now - then} milliseconds`);   // 2504
+	});

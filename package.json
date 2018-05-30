@@ -1,7 +1,7 @@
 {
-  "name": "looper",
+  "name": "promise-conveniences",
   "version": "1.0.0",
-  "description": "Add loop-like capability to Promises",
+  "description": "Add some helpers to native Promises",
   "main": "index.js",
   "scripts": {
     "test": "mocha"

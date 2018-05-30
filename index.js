@@ -29,3 +29,11 @@ Object.defineProperty(Promise, 'looper', {
         });
     }
 });
+
+Object.defineProperty(Promise, 'waiter', {
+    value: function(ms) {
+        return new Promise(ok => {
+            setTimeout(() => ok(), ms);
+        });
+    }
+});
