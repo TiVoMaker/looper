@@ -4,12 +4,14 @@
 
 Object.defineProperty(Promise, 'looper', {
     value: function (worker, checker, initialValue) {
-        return new Promise(ok => {
+        return new Promise((ok, fail) => {
 
             function runOnce(nextValue) {
                 if (nextValue instanceof Promise) {
                     nextValue.then(newValue => {
                         runOnce(newValue);
+                    }).catch(err => {
+                        fail(err);
                     });
                 } else {
                     if (checker(nextValue)) {

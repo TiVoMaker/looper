@@ -42,6 +42,17 @@ describe('Test the looper Promise function', function () {
             0
         ).then(finalValue => assert.strictEqual(finalValue, 10));
     });
+
+    it('Should throw an error properly', function () {
+        return Promise.looper(
+            value => Promise.reject(new Error('Testing thrown error')),
+            worked => assert(false, 'I should not have been called')
+        ).then(final => {
+            assert(false, 'The Promise should not have resolved');
+        }).catch(err => {
+            assert(err.message.indexOf('Testing thrown error') >= 0, 'The wrong error was thrown');
+        });
+    });
 });
 
 describe('Test the waiter Promise function', function () {
