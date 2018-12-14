@@ -20,6 +20,9 @@ A looping construct:
 	
 If you provide an initial value, it's a **while** loop, or without one it's a **do...until** loop.
 
+If the initial value is a Promise, it will wait for the Promise to
+resolve before starting the loop.
+
 To wait a specific amount of time:
 
 	const then = Date.now();
