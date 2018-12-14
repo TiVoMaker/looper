@@ -23,8 +23,21 @@ Object.defineProperty(Promise, 'looper', {
             }
 
             if (initialValue !== undefined) {
+                if (initialValue instanceof Promise) {
+                    initialValue.then(newValue => {
+                        if (!checker(newValue)) {
+                            ok(newValue);
+                            return;
+                        }
+                        runOnce(newValue);
+                    }).catch(err => {
+                        fail(err);
+                    });
+                    return;
+                }
                 if (!checker(initialValue)) {
                     ok(initialValue);
+                    return;
                 }
             }
             runOnce(worker(initialValue));

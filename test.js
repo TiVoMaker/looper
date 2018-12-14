@@ -42,6 +42,29 @@ describe('Test the looper Promise function', function () {
             0
         ).then(finalValue => assert.strictEqual(finalValue, 10));
     });
+    
+    it('Should handle a Promise as the initial value', function () {
+        let nLoops = 5;
+        return Promise.looper(
+            value => {
+                return Promise.resolve().then(() => {
+                    if (nLoops === 0) {
+                        return;
+                    }
+                    return nLoops;
+                });
+            },
+            worked => {
+                if (!worked) {
+                    assert(nLoops === 0, 'The looper did not loop correctly');
+                    return false;
+                }
+                nLoops--;
+                return true;
+            },
+            Promise.resolve('startTest')
+        );
+    });
 
     it('Should throw an error properly', function () {
         return Promise.looper(
