@@ -1,6 +1,6 @@
 {
   "name": "promise-conveniences",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Add some helpers to native Promises",
   "main": "index.js",
   "scripts": {
