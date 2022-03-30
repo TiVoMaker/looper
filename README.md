@@ -9,10 +9,10 @@ Just require it:
 A looping construct:
 
 	console.log(Promise.looper(
-		function (value) {
+		function worker (value) {
 			return Promise.resolve(value + 1);
 		},
-		function (nextResult) {
+		function checker (nextResult) {
 			return nextResult < 10;
 		},
 		1
@@ -22,6 +22,10 @@ If you provide an initial value, it's a **while** loop, or without one it's a **
 
 If the initial value is a Promise, it will wait for the Promise to
 resolve before starting the loop.
+
+You may return a Promise from the checker, in which case it will wait
+for the Promise to resolve, and will continue if it resolves with a truthy value, passing the
+the last worker result to the next invocation.
 
 To wait a specific amount of time:
 

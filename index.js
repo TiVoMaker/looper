@@ -15,7 +15,18 @@ if (!Promise.looper) {
                             fail(err);
                         });
                     } else {
-                        if (checker(nextValue)) {
+                        const answer = checker(nextValue);
+                        if (answer instanceof Promise) {
+                            answer.then(newAnswer => {
+                                if (newAnswer) {
+                                    setTimeout(() => runOnce(worker(nextValue)), 0);
+                                } else {
+                                    ok(nextValue);
+                                }
+                            }).catch(err => {
+                                fail(err);
+                            });
+                        } else if (answer) {
                             setTimeout(() => runOnce(worker(nextValue)), 0);
                         } else {
                             ok(nextValue);

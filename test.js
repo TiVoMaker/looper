@@ -76,6 +76,40 @@ describe('Test the looper Promise function', function () {
             assert(err.message.indexOf('Testing thrown error') >= 0, 'The wrong error was thrown');
         });
     });
+
+    it('Should delay the next iteration using a promise', function () {
+        let start;
+        return Promise.looper(
+            value => {
+                if (value) {
+                    const end = Date.now();
+                    assert(end - start >= 1000, 'The delay promise was not executed');
+                    return false;
+                }
+                start = Date.now();
+                return true;
+            },
+            worked => {
+                if (!worked) {
+                    return false;
+                }
+                return Promise.waiter(1000).then(() => {
+                    return true;
+                });
+            }
+        );
+    });
+
+    it('A while loop returning Promises from both worker and checker', function () {
+        return Promise.looper(
+            value => Promise.resolve(value + 1),
+            worked => {
+                return Promise.resolve(worked < 10);
+            },
+            0
+        ).then(finalValue => assert.strictEqual(finalValue, 10));
+    });
+
 });
 
 describe('Test the waiter Promise function', function () {
